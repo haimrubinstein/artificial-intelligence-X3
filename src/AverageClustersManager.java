@@ -8,9 +8,12 @@ public class AverageClustersManager extends ClusterManager {
 		super(wanted,points);
 	}
 
+	/**
+	 * calculate the distance between 2 clusters
+	 * according to average linkage metric
+	 */
 	@Override
 	protected double  calcDistOfTowHierarchies(Cluster A, Cluster B) {
-
 		return -1;
 	}
 }

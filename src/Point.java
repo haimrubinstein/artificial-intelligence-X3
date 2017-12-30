@@ -26,17 +26,11 @@ public class Point {
 		return y;
 	}
 
-	public int getCreation() {
-		return this.creation;
-	}
+	public int getCreation() { return this.creation; }
 
-	public void setCluster(int cluster) {
-		this.cluster = cluster;
-	}
+	public void setCluster(int cluster) { this.cluster = cluster; }
 
-	public int getCluster() {
-		return cluster;
-	}
+	public int getCluster() { return cluster; }
 
 	@Override
 	public boolean equals(Object obj) {

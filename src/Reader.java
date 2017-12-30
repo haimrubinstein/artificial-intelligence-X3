@@ -12,12 +12,12 @@ public class Reader {
 	/**
 	 * get the cluster class for current cluster type
 	 */
-	private ClusterManager getCluster(String type,ArrayList<Point> points) {
+	private ClusterManager getCluster(String type, ArrayList<Point> points, int numWanted) {
 		switch (type) {
 			case "average link":
-				return new AverageClustersManager(-1, points);
+				return new AverageClustersManager(numWanted, points);
 			case "single link":
-				return new SingleClusterManager(-1, points);
+				return new SingleClusterManager(numWanted, points);
 			default:
 		}
 
@@ -40,8 +40,7 @@ public class Reader {
 			int size = Integer.parseInt(line);
 
 			//start creating clusters
-			int currCluster = 0;
-			ArrayList<Point> points = new ArrayList<Point>();
+			ArrayList<Point> points = new ArrayList<>();
 			line = br.readLine();
 
 			int creationTime = 0;
@@ -51,11 +50,8 @@ public class Reader {
 				line = br.readLine();
 				creationTime++;
 			}
-
-			clusterManager.setNumOfClustersWanted(size);
-
-			clusterManager = this.getCluster(line,points);
-
+			//create the management class
+			clusterManager = this.getCluster(type, points, size);
 		} catch (Exception e) {
 			//todo handle error
 		}

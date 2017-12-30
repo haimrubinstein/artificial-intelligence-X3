@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * a class that represent a cluster of points
+ */
 public class Cluster {
 
-
 	private int clusNum;
+	private ArrayList<Point> points;
 
+	/**
+	 * getters and setters
+	 */
 	public Cluster(int num) {
 		this.clusNum = num;
 	}
@@ -18,19 +24,8 @@ public class Cluster {
 		return points;
 	}
 
-	private ArrayList<Point> points;
-
-
 	public void addPoint(Point p) {
 		this.points.add(p);
-	}
-
-	public boolean containPont(Point p) {
-		return this.points.contains(p);
-	}
-
-	public int length() {
-		return this.points.size();
 	}
 
 	public Iterator<Point> getIterator() {

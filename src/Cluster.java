@@ -14,6 +14,7 @@ public class Cluster {
 	 */
 	public Cluster(int num) {
 		this.clusNum = num;
+		this.points = new ArrayList<>();
 	}
 
 	public int getClusterNum() {

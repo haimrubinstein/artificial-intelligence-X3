@@ -20,9 +20,13 @@ public class SingleClusterManager extends ClusterManager {
 		double dist = Double.MAX_VALUE;
 		for (int i = 0; i < ApointList.size(); i++) {
 			for (int j = 0; j < BppointList.size(); j++) {
-				double temp = super.distanceMatrix[i][j];
-				if (temp < dist) {
-					dist = temp;
+				if (!ApointList.get(i).equals(BppointList.get(j))) {
+					Point p1 = ApointList.get(i);
+					Point p2 = BppointList.get(j);
+					double temp = super.distanceMatrix[p1.getCreation()][p2.getCreation()];
+					if (temp < dist) {
+						dist = temp;
+					}
 				}
 			}
 		}

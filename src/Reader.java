@@ -38,11 +38,9 @@ public class Reader {
 			//get size
 			line = br.readLine();
 			int size = Integer.parseInt(line);
-
 			//start creating clusters
 			ArrayList<Point> points = new ArrayList<>();
 			line = br.readLine();
-
 			int creationTime = 0;
 			while (line != null) {
 				String arr[] = line.split(",");
@@ -52,9 +50,12 @@ public class Reader {
 			}
 			//create the management class
 			clusterManager = this.getCluster(type, points, size);
+			return  clusterManager;
 		} catch (Exception e) {
+			System.out.print(e);
 			//todo handle error
 		}
+
 		return clusterManager;
 	}
 }

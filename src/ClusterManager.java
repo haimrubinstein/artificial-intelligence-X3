@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static java.lang.Integer.min;
+
 public abstract class ClusterManager {
 
 
 	private ArrayList<ArrayList<Cluster>> clusters;
 	protected ArrayList<Point> points;
 	protected double[][] distanceMatrix;
-	private int numOfSamplePoints;
 	private int numOfClustersWanted;
 	private int currIteration;
 
@@ -16,7 +17,6 @@ public abstract class ClusterManager {
 	 */
 	public ClusterManager(int numWanted, ArrayList<Point> points) {
 		this.numOfClustersWanted = numWanted;
-		this.numOfSamplePoints = points.size();
 		this.points = points;
 		this.distanceMatrix = new double[points.size()][points.size()];
 		this.currIteration = 0;
@@ -32,8 +32,9 @@ public abstract class ClusterManager {
 	protected void initialDistMatrix() {
 		for (int i = 0; i < this.points.size(); i++) {
 			for (int j = 0; j < this.points.size(); j++) {
-				double distIJ = Math.sqrt(points.get(i).getX() * points.get(j).getX()
-						+ points.get(i).getY() * points.get(j).getY());
+				int x = (points.get(i).getX() - points.get(j).getX());
+				int y = points.get(i).getY() - points.get(j).getY();
+				double distIJ = Math.sqrt(x * x + y * y);
 				distanceMatrix[i][j] = distIJ;
 			}
 		}
@@ -45,11 +46,11 @@ public abstract class ClusterManager {
 	 */
 	protected void initialFirstClusters() {
 		ArrayList<Cluster> arr = new ArrayList<Cluster>();
-		int i = 0;
+		int i = 1;
 		for (Point point : this.points) {
 			Cluster clus = new Cluster(i);
 			clus.addPoint(point);
-			arr.add(i, clus);
+			arr.add(i - 1, clus);
 			i++;
 		}
 
@@ -62,7 +63,7 @@ public abstract class ClusterManager {
 	 * if we do then we finished.
 	 */
 	protected boolean checkFinishCalc() {
-		ArrayList<Cluster> c = this.clusters.get(currIteration);
+		ArrayList<Cluster> c = this.clusters.get(this.currIteration);
 		return c.size() == 1;
 	}
 
@@ -72,33 +73,46 @@ public abstract class ClusterManager {
 	 */
 	protected void calculateClusters() {
 
+		this.currIteration = 0;
 		while (!this.checkFinishCalc()) {
 			this.currIteration++;
 			double closestDist = Double.MAX_VALUE;
 			int clusterToMergeA = -1;
 			int clusterToMergeB = -1;
-
+			int prev = this.currIteration - 1;
 			//get cluster one by one
-			ArrayList<Cluster> clustersArr = this.clusters.get(currIteration--);
+			ArrayList<Cluster> clustersArr = this.clusters.get(prev);
 			//calc the 2 closest clusters
 			for (int i = 0; i < clustersArr.size(); i++) {
 				for (int j = 0; j < clustersArr.size(); j++) {
-					double dist = calcDistOfTowHierarchies(clustersArr.get(i), clustersArr.get(j));
-					if (dist < closestDist) {
-						closestDist = dist;
-						clusterToMergeA = i;
-						clusterToMergeB = j;
+					if ((i != j)) {
+						double dist = calcDistOfTowHierarchies(clustersArr.get(i), clustersArr.get(j));
+						if ((dist < closestDist)) {
+							closestDist = dist;
+							clusterToMergeA = clustersArr.get(i).getClusterNum();
+							clusterToMergeB = clustersArr.get(j).getClusterNum();
+						}
 					}
 				}
 			}
+
+			int indexA=0;
+			int indexB=0;
+			for (int i = 0; i < clustersArr.size(); i++) {
+				if (clustersArr.get(i).getClusterNum() == clusterToMergeA) {
+					indexA = i;
+				} else if (clustersArr.get(i).getClusterNum() == clusterToMergeB) {
+					indexB = i;
+				}
+			}
 			//combine them to one
-			Cluster clus = this.mergeClusters(clustersArr.get(clusterToMergeA), clustersArr.get(clusterToMergeB));
+			Cluster clus = this.mergeClusters(clustersArr.get(indexA), clustersArr.get(indexB));
 			//create new cluster list
 			ArrayList<Cluster> newClustrArr = new ArrayList<Cluster>();
 			// remove them from curr and enter the new one
 			int index = 0;
 			for (int i = 0; i < clustersArr.size(); i++) {
-				if ((i != clusterToMergeA) && (i != clusterToMergeB)) {
+				if ((i != indexA) && (i != indexB)) {
 					newClustrArr.add(clustersArr.get(i));
 					index++;
 				}
@@ -125,7 +139,8 @@ public abstract class ClusterManager {
 	 * merge tow clusters into one big cluster
 	 */
 	protected Cluster mergeClusters(Cluster A, Cluster B) {
-		Cluster c = new Cluster();
+		int minClus = min(A.getClusterNum(), B.getClusterNum());
+		Cluster c = new Cluster(minClus);
 		Iterator<Point> iter = A.getIterator();
 		while (iter.hasNext()) {
 			c.addPoint(iter.next());

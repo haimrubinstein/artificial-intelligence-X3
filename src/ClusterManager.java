@@ -32,8 +32,8 @@ public abstract class ClusterManager {
 	protected void initialDistMatrix() {
 		for (int i = 0; i < this.points.size(); i++) {
 			for (int j = 0; j < this.points.size(); j++) {
-				int x = (points.get(i).getX() - points.get(j).getX());
-				int y = points.get(i).getY() - points.get(j).getY();
+				double x = (points.get(i).getX() - points.get(j).getX());
+				double y = points.get(i).getY() - points.get(j).getY();
 				double distIJ = Math.sqrt(x * x + y * y);
 				distanceMatrix[i][j] = distIJ;
 			}

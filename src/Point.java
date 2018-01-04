@@ -1,15 +1,15 @@
 public class Point {
 
 
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	private int cluster;
 	private int creation;
 
 	/**
 	 * the constructor
 	 */
-	public Point(int x, int y, int create) {
+	public Point(double x, double y, int create) {
 		this.x = x;
 		this.y = y;
 		this.creation = create;
@@ -18,11 +18,11 @@ public class Point {
 	/**
 	 * getters
 	 */
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 

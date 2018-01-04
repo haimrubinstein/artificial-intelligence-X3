@@ -44,7 +44,7 @@ public class Reader {
 			int creationTime = 0;
 			while (line != null) {
 				String arr[] = line.split(",");
-				points.add(new Point(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), creationTime));
+				points.add(new Point(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), creationTime));
 				line = br.readLine();
 				creationTime++;
 			}

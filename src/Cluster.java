@@ -21,6 +21,20 @@ public class Cluster {
 		return this.clusNum;
 	}
 
+	public void setPoints(ArrayList<Point> p) {
+		this.points = p;
+	}
+
+	public void setClusterNum(int n) {
+		this.clusNum = n;
+	}
+
+	public Cluster clone() {
+		Cluster c = new Cluster(this.clusNum);
+		c.setPoints(this.points);
+		return  c;
+	}
+
 	public ArrayList<Point> getPoints() {
 		return points;
 	}

@@ -64,7 +64,7 @@ public abstract class ClusterManager {
 	 */
 	protected boolean checkFinishCalc() {
 		ArrayList<Cluster> c = this.clusters.get(this.currIteration);
-		return c.size() == 1;
+		return c.size() == 1 || c.size() == this.numOfClustersWanted;
 	}
 
 	/**
@@ -107,17 +107,22 @@ public abstract class ClusterManager {
 			}
 			//combine them to one
 			Cluster clus = this.mergeClusters(clustersArr.get(indexA), clustersArr.get(indexB));
+			int insertIndex = clus.getClusterNum()-1;
 			//create new cluster list
 			ArrayList<Cluster> newClustrArr = new ArrayList<Cluster>();
+			ArrayList<Cluster> temp = new ArrayList<Cluster>();
 			// remove them from curr and enter the new one
-			int index = 0;
 			for (int i = 0; i < clustersArr.size(); i++) {
 				if ((i != indexA) && (i != indexB)) {
-					newClustrArr.add(clustersArr.get(i));
-					index++;
+					temp.add(clustersArr.get(i).clone());
 				}
 			}
-			newClustrArr.add(clus);
+			temp.add(insertIndex,clus);
+			for(int i = 0; i < temp.size(); i++){
+				Cluster c = temp.get(i);
+				c.setClusterNum(i+1);
+				newClustrArr.add(c);
+			}
 			this.clusters.add(newClustrArr);
 		}
 	}
